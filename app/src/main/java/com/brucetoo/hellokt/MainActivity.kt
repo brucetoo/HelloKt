@@ -3,6 +3,8 @@ package com.brucetoo.hellokt
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.TextView
 import java.util.*
 import kotlin.properties.Delegates
@@ -14,6 +16,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val view = findViewById(R.id.message) as TextView
         view.setText("fuck")
+        view.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
 
 
         println("This is max one ${max(1,3)}")
@@ -32,6 +45,9 @@ class MainActivity : AppCompatActivity() {
 
         //函数作为另一个函数的参数传递
         val numbers = listOf(1, 2, 3)
+        numbers.maxBy { it }
+        numbers.joinToString(separator = " ",transform = {it.toString()})
+        numbers.joinToString(" ") { it.toString() }
 //        println(numbers.filter(::isOdd))
 
     }
