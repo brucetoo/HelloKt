@@ -1,5 +1,6 @@
 package com.brucetoo.hellokt
 
+import utils.salute
 import java.io.File
 
 /**
@@ -68,4 +69,14 @@ fun main(args: Array<String>) {
     val files = arrayOf(File("/user"), File("/User"))
     println(files.sortWith(CaseComparator))
     getReach(Button)
+
+    print(::salute)
+
+    val numbers = mapOf(0 to "zero", 1 to "one")
+
+    //迭代values
+    print(numbers.mapValues { it.value.toUpperCase() })
+    //迭代keys
+    print(numbers.mapKeys { it.key.plus(1) })
+
 }
