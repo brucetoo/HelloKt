@@ -54,6 +54,26 @@ class MainActivity : AppCompatActivity() {
         testFlatMap()
     }
 
+    //String不是null就调用isNullOrBlack，否则不调用
+    fun String?.isNullOrBlack(): Boolean{
+        return this == null || this.isBlank()
+    }
+
+    fun verifyUserInput(input: String?) {
+        if (input.isNullOrBlank()) {
+            println("Please fill in the required fields")
+        }
+    }
+
+    fun printAllCaps(s: String?){
+        val result: String? = s?.toUpperCase()
+        //才分成两组:
+        //1.result: String? 表示可以返回null String
+        //2.如果不为Null 执行toUpperCase操作 s?.toUpperCase()
+        println(result)
+    }
+
+
     fun alphabet(): String {
         val result = StringBuilder()
         for (letter in 'A'..'Z') {
@@ -103,6 +123,20 @@ class MainActivity : AppCompatActivity() {
         text = "I am a text"
         setTextColor(Color.RED)
         setPadding(10, 0, 0, 0)
+
+        val p1 = Point(1, 2)
+        val p2 = Point(3, 4)
+        println(p1 + p2)
+    }
+
+    class Point(val name: Int, count: Int){
+        val count: Int by Delegates.observable(count){
+            property, oldValue, newValue -> println("name: ${property.name} oldValue:${oldValue}")
+        }
+    }
+
+    operator fun Point.plus(point: Point): Point{
+        return Point(name + point.name,count + point.count)
     }
 
 
