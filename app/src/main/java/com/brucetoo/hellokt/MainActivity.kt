@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //String不是null就调用isNullOrBlack，否则不调用
-    fun String?.isNullOrBlack(): Boolean{
+    fun String?.isNullOrBlack(): Boolean {
         return this == null || this.isBlank()
     }
 
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun printAllCaps(s: String?){
+    fun printAllCaps(s: String?) {
         val result: String? = s?.toUpperCase()
         //才分成两组:
         //1.result: String? 表示可以返回null String
@@ -127,16 +127,60 @@ class MainActivity : AppCompatActivity() {
         val p1 = Point(1, 2)
         val p2 = Point(3, 4)
         println(p1 + p2)
+        twoAndThree { a, b -> a + b }
     }
 
-    class Point(val name: Int, count: Int){
-        val count: Int by Delegates.observable(count){
-            property, oldValue, newValue -> println("name: ${property.name} oldValue:${oldValue}")
+    val sum = { x: Int, y: Int -> x + y }
+    //返回值可为null
+    val sum1: ((Int, Int) -> Int)? = null
+
+    val sum2: (Int, Int) -> Int? = { _: Int, _: Int -> null }
+
+    //定义参数operation 作为函数类型
+    fun twoAndThree(operation: (Int, Int) -> Int) {
+        //内部调用函数类型的参数
+        val result = operation(2, 3)
+        println("The result is ${result}")
+
+        "ab2233c".filter { it in 'a'..'z' }
+    }
+
+    //定义String的扩展函数filter，参数是Char,函数predicate返回值是 Boolean
+    //该函数相当于是根据条件来过滤String中的char， = {false}表示默认值
+    fun String.filter(predicate: (Char) -> Boolean = {false}): String {
+        val sb = StringBuilder()
+        //遍历String
+        for (index in 0..length - 1) {
+            val char = get(index)
+            //如果函数predicate的char参数满足条件，就添加到sb中
+            if (predicate(char)){
+                sb.append(char)
+            }
         }
+        return sb.toString()
     }
 
-    operator fun Point.plus(point: Point): Point{
-        return Point(name + point.name,count + point.count)
+    fun lookForAlice(people: List<Person>) {
+        //定义no-local返回
+        people.forEach label@ {
+            //条件满足就和 break的操作一样，后续的语句能执行
+            //而区别于 return 是直接方法返回，后续的语句不能执行
+            if (it.name == "Alice") return@label
+        }
+        println("Alice might be somewhere")
+    }
+
+
+    class Point(val name: Int, count: Int) {
+        val count: Int by Delegates.observable(count) {
+            property, oldValue, newValue ->
+            println("name: ${property.name} oldValue:${oldValue}")
+        }
+
+    }
+
+    operator fun Point.plus(point: Point): Point {
+        return Point(name + point.name, count + point.count)
     }
 
 
